@@ -1,22 +1,15 @@
-﻿using Antlr.Runtime.Misc;
-using defaultASP.Models;
+﻿using defaultASP.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Security.Policy;
-using System.Web;
-using System.Web.Helpers;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
-using System.Web.Mvc;
-using Microsoft.Data.SqlClient;
 
 namespace defaultASP.Controllers
 {
-    public class RegApiController : ApiController
+    public class RegApi2Controller : ApiController
     {
-        string connectionString = @"data source=localhost;initial catalog=WebApi2;integrated security=True;trustservercertificate=True;MultipleActiveResultSets=True;App=EntityFramework;";
-        string tableName = "staff";
         public IHttpActionResult GetAllStaff()
         {
             IList<StaffModel> staff = null;
@@ -40,7 +33,7 @@ namespace defaultASP.Controllers
             {
                 return NotFound();
             }
-            
+
             return Ok(staff);
         }
         public IHttpActionResult GetStaffById(int id)
@@ -73,30 +66,9 @@ namespace defaultASP.Controllers
             {
                 return BadRequest("Data is formatted incorrectly");
             }
-            /*
-            using (var con = new SqlConnection(connectionString))
-            {
-                
-                string query = $"insert into {tableName} (first_name, last_name, email, phone, active, store_id) values('{staff.first_name}', '{staff.last_name}', '{staff.email}', '{staff.phone}', '{staff.active}', {staff.store_id});";
-                using (var cmd = new SqlCommand(query, con))
-                {
-
-                    try
-                    {
-                        con.Open();
-                        cmd.ExecuteNonQuery();
-                        con.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        return BadRequest(ex.Message);
-                    }
-                }
-            }
-            */
             using (var ctx = new WebApi2Entities())
             {
-                ctx.staffs.Add(new staff()
+                ctx.Staff.Add(new staff()
                 {
                     staff_id = staff.staff_id,
                     first_name = staff.first_name,
@@ -116,25 +88,6 @@ namespace defaultASP.Controllers
             {
                 return BadRequest("Data is formatted incorrectly");
             }
-            using (var con = new SqlConnection(connectionString))
-            {
-                string query = $"update {tableName} set first_name = '{staff.first_name}', last_name = '{staff.last_name}', email = '{staff.email}', phone = '{staff.phone}', active = '{staff.active}', store_id = {staff.store_id} where staff_id={staff.staff_id}";
-                using (var cmd = new SqlCommand(query, con))
-                {
-
-                    try
-                    {
-                        con.Open();
-                        cmd.ExecuteNonQuery();
-                        con.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        return BadRequest(ex.Message);
-                    }
-                }
-            }
-            /*
             using (var ctx = new WebApi2Entities())
             {
                 var staffSelected = ctx.staffs.Where(i => i.staff_id == staff.staff_id).First();
@@ -154,7 +107,6 @@ namespace defaultASP.Controllers
                     return NotFound();
                 }
             }
-            */
             return Ok($"Staff {staff.staff_id} updated");
         }
         public IHttpActionResult Delete(int id)
@@ -163,24 +115,6 @@ namespace defaultASP.Controllers
             {
                 return BadRequest($"{id} is an invalid staff id.");
             }
-            using(var con = new SqlConnection(connectionString))
-            {
-                string query = $"delete from {tableName} where staff_id={id}";
-                using(var cmd = new SqlCommand(query, con))
-                {
-
-                    try
-                    {
-                        con.Open();
-                        cmd.ExecuteNonQuery();
-                        con.Close();
-                    } catch (Exception ex)
-                    {
-                        return BadRequest(ex.Message);
-                    }
-                }
-            }
-            /*
             using (var ctx = new WebApi2Entities())
             {
                 var staff = ctx.staffs
@@ -189,7 +123,6 @@ namespace defaultASP.Controllers
                 ctx.Entry(staff).State = System.Data.Entity.EntityState.Deleted;
                 ctx.SaveChanges();
             }
-            */
             return Ok($"Staff {id} deleted");
         }
     }

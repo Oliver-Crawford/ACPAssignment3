@@ -19,7 +19,7 @@ namespace defaultASP.Controllers
             {
                 client.BaseAddress = new Uri("http://localhost:10028/api/");
                 //HTTP GET
-                var responseTask = client.GetAsync("RegApi");
+                var responseTask = client.GetAsync("RegApi2");
                 responseTask.Wait();
 
                 var result = responseTask.Result;
@@ -53,7 +53,7 @@ namespace defaultASP.Controllers
                 client.BaseAddress = new Uri("http://localhost:10028/api/");
 
                 //HTTP POST
-                var postTask = client.PostAsJsonAsync<StaffModel>("RegApi", staff);
+                var postTask = client.PostAsJsonAsync<StaffModel>("RegApi2", staff);
                 postTask.Wait();
 
                 var result = postTask.Result;
@@ -75,7 +75,7 @@ namespace defaultASP.Controllers
             {
                 client.BaseAddress = new Uri("http://localhost:10028/api/");
                 //HTTP GET
-                var responseTask = client.GetAsync("RegApi/?id=" + id.ToString());
+                var responseTask = client.GetAsync("RegApi2/?id=" + id.ToString());
                 responseTask.Wait();
 
                 var result = responseTask.Result;
@@ -98,7 +98,7 @@ namespace defaultASP.Controllers
                 client.BaseAddress = new Uri("http://localhost:10028/api/");
 
                 //HTTP POST
-                var putTask = client.PutAsJsonAsync<StaffModel>("RegApi", staff);
+                var putTask = client.PutAsJsonAsync<StaffModel>("RegApi2", staff);
                 putTask.Wait();
 
                 var result = putTask.Result;
@@ -121,7 +121,7 @@ namespace defaultASP.Controllers
                 client.BaseAddress = new Uri("http://localhost:10028/api/");
 
                 //HTTP DELETE
-                var deleteTask = client.DeleteAsync("RegApi/" + id.ToString());
+                var deleteTask = client.DeleteAsync("RegApi2/" + id.ToString());
                 deleteTask.Wait();
 
                 var result = deleteTask.Result;
